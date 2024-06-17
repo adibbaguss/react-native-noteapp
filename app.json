@@ -1,5 +1,6 @@
 {
   "expo": {
+    "platforms": ["android", "ios", "web"],
     "name": "ProgateNote",
     "slug": "ProgateNote",
     "version": "1.0.0",

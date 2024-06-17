@@ -1,13 +1,17 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-const CustomButton = ({ backgroundColor, color, text, onPress, fontSize = 16, width = 120 }) => {
+const CustomButton = ({ backgroundColor, color, text, onPress, fontSize = 16, width = 120, marginBottom = 10, borderRadius = 8, borderColor, borderWidth }) => {
   const styles = StyleSheet.create({
     button: {
       alignItems: 'center',
       backgroundColor,
       width,
       padding: 10,
+      marginBottom,
+      borderRadius,
+      borderColor,
+      borderWidth,
     },
     buttonText: {
       fontSize,

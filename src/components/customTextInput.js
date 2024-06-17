@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, Text, StyleSheet, View } from 'react-native';
 
-const CustomTextInput = ({ text, onChange, label, multiline, numberOfLines }) => {
+const CustomTextInput = ({ text, onChange, label, multiline, numberOfLines, textAlignVertical, borderRadius = 5 }) => {
   const styles = StyleSheet.create({
     textInputWrapper: {
       marginTop: 20,
@@ -10,6 +10,8 @@ const CustomTextInput = ({ text, onChange, label, multiline, numberOfLines }) =>
       borderWidth: 2,
       borederColor: '#DDD',
       padding: 10,
+      textAlignVertical,
+      borderRadius,
     },
   });
 

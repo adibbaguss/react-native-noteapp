@@ -1,41 +1,76 @@
 import React from 'react';
-import { FlatList, StyleSheet, View, Text, SafeAreaView, StatusBar } from 'react-native';
+import { FlatList, StyleSheet, View, Text, SafeAreaView, StatusBar, Alert } from 'react-native';
 import CustomButton from '../components/customButton';
 
-const NoteCard = ({ item, setCurrentPage }) => (
+const NoteCard = ({ item, setCurrentPage, deleteNote, selectNote }) => (
   <View style={styles.card}>
     <Text style={styles.cardTitle}>{item.title}</Text>
-    <Text>{item.desc}</Text>
+    <Text style={styles.cardDesc}>{item.desc}</Text>
     <View style={styles.buttons}>
+      {/* tombol edit */}
       <CustomButton
-        backgroundColor="#FFC300"
-        color="#151D3B"
-        text="ubah"
+        backgroundColor="transparant"
+        color="#247881"
+        text="Ubah"
         fontSize={12}
         width={100}
         onPress={() => {
+          selectNote(item);
           setCurrentPage('edit');
         }}
+        borderWidth={1} // Lebar border 1 pixel
+        borderColor="#247881" // Warna border
       />
-      <CustomButton backgroundColor="#D82148" color="#fff" text="Hapus" fontSize={12} width={100} onPress={() => {}} />
+
+      {/* tombol hapus */}
+      <CustomButton
+        color="#D82148"
+        backgroundColor="transparant"
+        text="Hapus"
+        fontSize={12}
+        width={100}
+        onPress={() => {
+          // Konfirmasi penghapusan
+          Alert.alert(
+            'Konfirmasi',
+            'Anda yakin ingin menghapus catatan ini?',
+            [
+              { text: 'Batal', style: 'cancel' },
+              {
+                text: 'Hapus',
+                style: 'destructive',
+                onPress: () => deleteNote(item.id), // Panggil fungsi deleteNote dengan ID catatan
+              },
+            ],
+            { cancelable: true }
+          );
+        }}
+        borderWidth={1} // Lebar border 1 pixel
+        borderColor="#D82148" // Warna border
+      />
     </View>
   </View>
 );
 
-const Home = ({ noteList, setCurrentPage }) => (
+const Home = ({ noteList, setCurrentPage, deleteNote, selectNote }) => (
   <SafeAreaView style={styles.container}>
-    <StatusBar />
+    <StatusBar backgroundColor="#000" />
     <CustomButton
-      backgroundColor="#DDD"
-      color="#203239"
+      backgroundColor="#247881"
+      color="#fff"
       text="Tambahkan Note"
       width="100%"
-      s
       onPress={() => {
         setCurrentPage('add');
       }}
     />
-    <FlatList showsVerticalScrollIndicator={false} data={noteList} renderItem={({ item }) => <NoteCard item={item} setCurrentPage={setCurrentPage} />} keyExtractor={(item) => item.id} />
+    <FlatList
+      showsVerticalScrollIndicator={false}
+      data={noteList}
+      // render
+      renderItem={({ item }) => <NoteCard item={item} setCurrentPage={setCurrentPage} deleteNote={deleteNote} selectNote={selectNote} />}
+      keyExtractor={(item) => item.id.toString()} // Memastikan id diubah menjadi string
+    />
   </SafeAreaView>
 );
 
@@ -48,10 +83,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   card: {
-    padding: 10,
+    padding: 15,
     marginVertical: 15,
-    borderColor: '#DDD',
-    borderWidth: 2,
+    borderColor: '#000',
+    borderWidth: 1,
     borderRadius: 5,
   },
   cardTitle: {
@@ -59,7 +94,13 @@ const styles = StyleSheet.create({
     color: '#203239',
     fontSize: 16,
     marginBottom: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#dfdfdf',
   },
+  cardDesc: {
+    marginVertical: 5,
+  },
+
   buttons: {
     marginTop: 10,
     display: 'flex',

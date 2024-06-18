@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, View, Text, SafeAreaView, StatusBar, Alert } from 'react-native';
+import { FlatList, StyleSheet, View, Text, SafeAreaView, StatusBar, Alert, Platform } from 'react-native';
 import CustomButton from '../components/customButton';
 
 const NoteCard = ({ item, setCurrentPage, deleteNote, selectNote }) => (
@@ -25,7 +25,7 @@ const NoteCard = ({ item, setCurrentPage, deleteNote, selectNote }) => (
       {/* tombol hapus */}
       <CustomButton
         color="#D82148"
-        backgroundColor="transparant"
+        backgroundColor="transparent" // Perbaikan pada "transparent"
         text="Hapus"
         fontSize={12}
         width={100}

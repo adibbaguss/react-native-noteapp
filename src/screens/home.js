@@ -30,23 +30,32 @@ const NoteCard = ({ item, setCurrentPage, deleteNote, selectNote }) => (
         fontSize={12}
         width={100}
         onPress={() => {
-          // Konfirmasi penghapusan
-          Alert.alert(
-            'Konfirmasi',
-            'Anda yakin ingin menghapus catatan ini?',
-            [
-              { text: 'Batal', style: 'cancel' },
-              {
-                text: 'Hapus',
-                style: 'destructive',
-                onPress: () => deleteNote(item.id), // Panggil fungsi deleteNote dengan ID catatan
-              },
-            ],
-            { cancelable: true }
-          );
+          console.log('Delete button pressed for item ID:', item.id); // Tambahkan log
+          if (Platform.OS === 'web') {
+            if (window.confirm('Anda yakin ingin menghapus catatan ini?')) {
+              deleteNote(item.id);
+            }
+          } else {
+            Alert.alert(
+              'Konfirmasi',
+              'Anda yakin ingin menghapus catatan ini?',
+              [
+                { text: 'Batal', style: 'cancel' },
+                {
+                  text: 'Hapus',
+                  style: 'destructive',
+                  onPress: () => {
+                    console.log('Delete confirmed for item ID:', item.id); // Tambahkan log
+                    deleteNote(item.id);
+                  },
+                },
+              ],
+              { cancelable: true }
+            );
+          }
         }}
-        borderWidth={1} // Lebar border 1 pixel
-        borderColor="#D82148" // Warna border
+        borderWidth={1}
+        borderColor="#D82148"
       />
     </View>
   </View>
@@ -55,22 +64,24 @@ const NoteCard = ({ item, setCurrentPage, deleteNote, selectNote }) => (
 const Home = ({ noteList, setCurrentPage, deleteNote, selectNote }) => (
   <SafeAreaView style={styles.container}>
     <StatusBar backgroundColor="#000" />
-    <CustomButton
-      backgroundColor="#247881"
-      color="#fff"
-      text="Tambahkan Note"
-      width="100%"
-      onPress={() => {
-        setCurrentPage('add');
-      }}
-    />
-    <FlatList
-      showsVerticalScrollIndicator={false}
-      data={noteList}
-      // render
-      renderItem={({ item }) => <NoteCard item={item} setCurrentPage={setCurrentPage} deleteNote={deleteNote} selectNote={selectNote} />}
-      keyExtractor={(item) => item.id.toString()} // Memastikan id diubah menjadi string
-    />
+    <View style={styles.subContainer}>
+      <CustomButton
+        backgroundColor="#247881"
+        color="#fff"
+        text="Tambahkan Note"
+        width="100%"
+        onPress={() => {
+          setCurrentPage('add');
+        }}
+      />
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={noteList}
+        // render
+        renderItem={({ item }) => <NoteCard item={item} setCurrentPage={setCurrentPage} deleteNote={deleteNote} selectNote={selectNote} />}
+        keyExtractor={(item) => item.id.toString()} // Memastikan id diubah menjadi string
+      />
+    </View>
   </SafeAreaView>
 );
 
@@ -79,6 +90,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    flex: 1,
+  },
+  subContainer: {
+    display: 'flex',
     padding: 20,
     flex: 1,
   },

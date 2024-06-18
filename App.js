@@ -32,6 +32,7 @@ const App = () => {
   };
 
   const deleteNote = (id) => {
+    console.log('Deleting note with ID:', id); //mengecek delete
     setNoteList(noteList.filter((note) => note.id !== id));
   };
 
